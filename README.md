@@ -162,5 +162,5 @@ run_pal2nal_on_cds_and_aa_dirs.pl --aa_dir=ppp.out/phylopypruner_output/output_a
 
 ```bash
 cp OrthoFinder/Results_MonDD/Species_Tree/SpeciesTree_rooted.txt rooted.tree
-
+```
 
