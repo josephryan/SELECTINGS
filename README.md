@@ -6,15 +6,7 @@ The detection of positive Darwinian selection enables the identification of impo
 ## Getting started with SELECTINGS
 You need to install the following prerequesites. We will create 2 conda images. This is necessary as hyphy does not work when some of these other packages are installed.
 
-1. Clone SELECTINGS
-
-```bash
-git clone https://github.com/josephryan/SELECTINGS
-cd SELECTINGS
-```
-
-
-2. Create hyphy environment
+1. Create hyphy environment
 
 ```bash
 conda create --name hyphy
@@ -23,29 +15,31 @@ conda install -c bioconda hyphy
 conda deactivate
 ```
 
-3. Create general environment
+2. Create general environment
 
 ```bash
 conda create --name selectings
 conda activate selectings
 
-# note: the following command will take a while
+# note: the following commands will take a while
 conda install -y -c conda-forge perl perl-uri r-ape scipy
-conda install -y -c bioconda perl-db-file orthofinder transdecoder pal2nal paml
-cpan URI::Escape Math::CDF JSON::Parse Set::IntervalTree
+conda install -y -c bioconda orthofinder transdecoder pal2nal paml perl-db-file perl-math-cdf perl-json-parse perl-set-intervaltree perl-uri
 pip install phylopypruner   
 
-# install scripts and modules
-cd scripts
+3. Clone SELECTINGS and install scripts/modules
+
+```bash
+git clone https://github.com/josephryan/SELECTINGS
+cd SELECTINGS/scripts
 perl Makefile.PL
 make
 make install
-cd ..
 ```
 
 4. Uncompress sample data
 
 ```bash
+cd ..
 gzip -d sample_data/*.gz 
 ```
 
@@ -58,6 +52,8 @@ diamond makedb --in uniprot_sprot.fasta -d swissprot
 ```
 
 ## Vignette 1
+
+#### To run your own data make a directory at the same level as sample_data and make sure your deflines are simple like the ones in our sample_data.
 
 1. Create vignette1 directory and change to this directory
 
