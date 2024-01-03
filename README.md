@@ -1,7 +1,7 @@
 # SELECTINGS
 A pipeline to detect positive Darwinian selection in large datasets
 
-The detection of positive Darwinian selection enables the identification of important changes in protein-coding regions of a genome that helped shape the evolutionary history of a particular lineage. Despite the availability of coding sequence data for many thousands of species, it remains a challenge to conduct large-scale selection analyses on broad collections of sequence data. To address this gap, we have developed a pipeline that allows for the analysis of an unlimited number of genes from an unlimited number of assembled transcriptomes and/or gene models gathered from genomic datasets. The SELECTINGS (Screening Evolutionary Lineages for Exceptional Coding Transcripts In Next Generation Sequence) Pipeline incorporates several existing bioinformatic packages for translating transcriptomes (Transdecoder), identifying orthologous sequences (OrthoFinder), aligning sequences (MAFFT), building gene trees (FastTree or IQTree), pruning trees (PhyloPyPruner), converting protein alignments to nucleotide alignments (PAL2NAL), detecting gene and site-based evidence of positive selection (comparable branch-site tests in PAML and HyPhy). This repo includes a set of scripts, documentation, sample data, installation instructions , and a tutorial. Compared to other similar tools, the SELECTINGS Pipeline allows for greater flexibility in terms of methodology, number of genes that can be analyzed, and the phylogenetic breadth that can be sampled.
+The detection of positive Darwinian selection enables the identification of important changes in protein-coding regions of a genome that helped shape the evolutionary history of a particular lineage. Despite the availability of coding sequence data for many thousands of species, it remains a challenge to conduct large-scale selection analyses on broad collections of sequence data. To address this gap, we have developed a pipeline that allows for the analysis of an unlimited number of genes from an unlimited number of assembled transcriptomes and/or gene models gathered from genomic datasets. The SELECTINGS (Screening Evolutionary Lineages for Exceptional Coding Transcripts In Next Generation Sequence) Pipeline incorporates several existing bioinformatic packages for translating transcriptomes (Transdecoder), identifying orthologous sequences (OrthoFinder), aligning sequences (MAFFT), building gene trees (FastTree or IQTree), pruning trees (PhyloPyPruner), converting protein alignments to nucleotide alignments (PAL2NAL), detecting gene and site-based evidence of positive selection (comparable branch-site tests in PAML and HyPhy). This repo includes a set of scripts, documentation, sample data, installation instructions , and a vignette. Compared to other similar tools, the SELECTINGS Pipeline allows for greater flexibility in terms of methodology, number of genes that can be analyzed, and the phylogenetic breadth that can be sampled.
 
 ## Getting started with SELECTINGS
 You need to install the following prerequesites. We will create 2 conda images. This is necessary as hyphy does not work when some of these other packages are installed.
@@ -57,17 +57,17 @@ gzip -d uniprot_sprot.fasta.gz
 diamond makedb --in uniprot_sprot.fasta -d swissprot
 ```
 
-## Tutorial
+## Vignette 1
 
-1. Create tutorial directory and change to this directory
+1. Create vignette1 directory and change to this directory
 
 ```bash
-mkdir tutorial
-cd tutorial
+mkdir vignette1
+cd vignette1
 ```
 
 ##### NOTE: Many of the commands below can run much faster if the number of threads/CPUs is increased from 1.  For commands where threads/CPUs can be adjusted there is a note in brackets that starts with "THREADS: ". 
-For example, [THREADS: adjust --threads] 
+For example, [THREADS: adjust --threads]
 
 2. Identify longest orfs (~2 minutes per FASTA)
 
@@ -84,13 +84,13 @@ TransDecoder.LongOrfs -t ../sample_data/Species_G.fasta > tdG.out 2> tdG.err
 3. Run diamond blastp vs. swissprot on each longest_orfs file [THREADS: adjust --threads]
 
 ```bash
-diamond blastp --threads 1 -e 1e-5 -d ../uniprot_sprot.fasta -q Species_A.fasta.transdecoder_dir/longest_orfs.pep > Sp_A.dmd.out 2> Sp_A.dmd.err 
-diamond blastp --threads 1 -e 1e-5 -d ../uniprot_sprot.fasta -q Species_B.fasta.transdecoder_dir/longest_orfs.pep > Sp_B.dmd.out 2> Sp_B.dmd.err 
-diamond blastp --threads 1 -e 1e-5 -d ../uniprot_sprot.fasta -q Species_C.fasta.transdecoder_dir/longest_orfs.pep > Sp_C.dmd.out 2> Sp_C.dmd.err 
-diamond blastp --threads 1 -e 1e-5 -d ../uniprot_sprot.fasta -q Species_D.fasta.transdecoder_dir/longest_orfs.pep > Sp_D.dmd.out 2> Sp_D.dmd.err 
-diamond blastp --threads 1 -e 1e-5 -d ../uniprot_sprot.fasta -q Species_E.fasta.transdecoder_dir/longest_orfs.pep > Sp_E.dmd.out 2> Sp_E.dmd.err 
-diamond blastp --threads 1 -e 1e-5 -d ../uniprot_sprot.fasta -q Species_F.fasta.transdecoder_dir/longest_orfs.pep > Sp_F.dmd.out 2> Sp_F.dmd.err 
-diamond blastp --threads 1 -e 1e-5 -d ../uniprot_sprot.fasta -q Species_G.fasta.transdecoder_dir/longest_orfs.pep > Sp_G.dmd.out 2> Sp_G.dmd.err 
+diamond blastp --threads 1 -e 1e-5 -d ../swissprot -q Species_A.fasta.transdecoder_dir/longest_orfs.pep > Sp_A.dmd.out 2> Sp_A.dmd.err 
+diamond blastp --threads 1 -e 1e-5 -d ../swissprot -q Species_B.fasta.transdecoder_dir/longest_orfs.pep > Sp_B.dmd.out 2> Sp_B.dmd.err 
+diamond blastp --threads 1 -e 1e-5 -d ../swissprot -q Species_C.fasta.transdecoder_dir/longest_orfs.pep > Sp_C.dmd.out 2> Sp_C.dmd.err 
+diamond blastp --threads 1 -e 1e-5 -d ../swissprot -q Species_D.fasta.transdecoder_dir/longest_orfs.pep > Sp_D.dmd.out 2> Sp_D.dmd.err 
+diamond blastp --threads 1 -e 1e-5 -d ../swissprot -q Species_E.fasta.transdecoder_dir/longest_orfs.pep > Sp_E.dmd.out 2> Sp_E.dmd.err 
+diamond blastp --threads 1 -e 1e-5 -d ../swissprot -q Species_F.fasta.transdecoder_dir/longest_orfs.pep > Sp_F.dmd.out 2> Sp_F.dmd.err 
+diamond blastp --threads 1 -e 1e-5 -d ../swissprot -q Species_G.fasta.transdecoder_dir/longest_orfs.pep > Sp_G.dmd.out 2> Sp_G.dmd.err 
 ```
 
 4. Predict likely coding regions [THREADS: adjust --cpu]
@@ -108,8 +108,7 @@ TransDecoder.Predict -t ../sample_data/Species_G.fasta --retain_blastp_hits Sp_G
 5. Create directories of peps and cds files
 
 ```bash
-mkdir peps
-mkdir cds
+mkdir peps cds
 mv *.pep peps
 mv *.cds cds
 ```
@@ -120,18 +119,10 @@ mv *.cds cds
 orthofinder -X -z -t 1 -f peps -M msa > of.out 2> of.err 
 ```
 
-7. Set OFDIR variable. OrthoFinder creates a results directory Results_MonDD (e.g. "Results_Dec14"). This directory is listed in the of.out (below the line that begins "Results:." This command will set OFDIR if you are using BASH.
+7. Get data associated with orthogroups containing all seven species. 
 
 ```bash
-grep -A1 '^Results:' of.out | tail -n1 | perl -ne 's/^\s+//; print "export OFDIR=$_";' | sh
-# test that it was set
-echo $OFDIR
-```
-
-7. Get data associated with orthogroups containing all seven species. Note: OrthoFinder creates a results directory Results_MonDD (e.g. "Results_Dec14"). `grep -A1 '^Results:' of.out` will reveal this directory. Within that directory will be the directories "MultipleSequenceAlignments" and "Gene_Trees."
-
-```bash
-get_fasta_and_tree_w_min_number.pl --fa_dir=OrthoFinder/Results_MonDD/MultipleSequenceAlignments --tree_dir=OrthoFinder/Results_MonDD/Gene_Trees --out_dir=GFWMN.out --min_taxa=7
+get_fasta_and_tree_w_min_number.pl --of_out=of.out --out_dir=GFWMN.out --min_taxa=7
 ```
 
 8. Run PhyloPyPruner (identify 1-to-1 orthologs) [THREADS: adjust --threads]
@@ -158,9 +149,18 @@ perl -pi -e 's/^>([^|]+)\|.*/>$1/' cds.subset/* ppp.out/phylopypruner_output/out
 
 run_pal2nal_on_cds_and_aa_dirs.pl --aa_dir=ppp.out/phylopypruner_output/output_alignments --cds_dir=cds.subset --outdir=p2n.out > runp2n.out 2> runp2n.err
 
-12. cp the (rooted) species tree generated by orthonfinder to the current directory
+12. Create an unrooted version of the species tree generated by orthonfinder
 
 ```bash
-cp OrthoFinder/Results_MonDD/Species_Tree/SpeciesTree_rooted.txt rooted.tree
+Rscript scripts/unroot.R OrthoFinder/Results_MonDD/Species_Tree/SpeciesTree_rooted.txt > unrooted.tree
 ```
+
+13. Edit species name in unrooted.tree
+
+```bash
+perl -pi -e 's/.fasta.transdecoder//g' unrooted.tree
+```
+
+##### PAML
+
 
