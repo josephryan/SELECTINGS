@@ -12,19 +12,22 @@ our $AUTHOR  = 'Joseph F. Ryan <joseph.ryan@whitney.ufl.edu>';
 
 MAIN: {
     my $rh_o    = process_options();
-    my $fa_dir  = $rh_o->{'fa_dir'};
-    my $treedir = $rh_o->{'tree_dir'};
     my $outdir  = $rh_o->{'out_dir'};
     my $min     = $rh_o->{'min_taxa'};
+    my $ofout   = $rh_o->{'of_out'} || '';;
+    my $ofrdir  = $rh_o->{'of_resdir'} || '';;
     my $count   = 0;
+    my $tdir = '';
+    my $fdir  = '';
 
+    ($tdir,$fdir) = get_tree_and_fa_dir($ofout,$ofrdir);
     check_outdir($outdir);
 
-    opendir DIR, $fa_dir or die "cannot open $fa_dir:$!";
+    opendir DIR, $fdir or die "cannot open $fdir:$!";
     my @files = readdir DIR;
     foreach my $f (@files) {
         next if ($f =~ m/SpeciesTreeAlignment.fa/);
-        open IN, "$fa_dir/$f" or die "cannot open $fa_dir/$f:$!";
+        open IN, "$fdir/$f" or die "cannot open $fdir/$f:$!";
         my $count = 0;
         my $seqs = '';
         my %species = ();
@@ -37,9 +40,34 @@ MAIN: {
         }
         if ($count >= $min) {
             write_seqs($outdir,$f,$seqs);
-            write_trees($treedir,$outdir,$f);
+            write_trees($tdir,$outdir,$f);
         }
     }
+}
+
+sub get_tree_and_fa_dir {
+    my $of     = shift;
+    my $ofrdir = shift;
+    my $tdir   = '';
+    my $fdir   = '';
+    if ($of) {
+        open IN, $of or die "cannot open $of:$!";
+        my $flag = 0;
+        while (my $line = <IN>) {
+            chomp $line;
+            if ($flag) {
+                chomp $line;
+                $line =~ s/^\s+//;
+                $ofrdir = $line;
+            } elsif ($line =~ m/^Results:/) {
+                $flag = 1;
+            }
+        }
+        die "$of (--of_out option) should be standard output of OrthoFinder run\n" unless ($ofrdir);
+    }
+    $tdir = "$ofrdir/Gene_Trees";
+    $fdir = "$ofrdir/MultipleSequenceAlignments";
+    return ($tdir,$fdir);
 }
 
 sub process_options {
@@ -49,10 +77,8 @@ sub process_options {
                                "v"          => \$rh_opts->{'version'},
                                "h"          => \$rh_opts->{'help'},
                                "help"       => \$rh_opts->{'help'},
-                               "fa_dir=s"   => \$rh_opts->{'fa_dir'},
-                               "fadir=s"    => \$rh_opts->{'fa_dir'},
-                               "tree_dir=s" => \$rh_opts->{'tree_dir'},
-                               "treedir=s"  => \$rh_opts->{'tree_dir'},
+                               "of_out=s"   => \$rh_opts->{'of_out'},
+                              "of_resdir=s" => \$rh_opts->{'of_resdir'},
                                "out_dir=s"  => \$rh_opts->{'out_dir'},
                                "outdir=s"   => \$rh_opts->{'out_dir'},
                                "min_taxa=s" => \$rh_opts->{'min_taxa'},
@@ -60,10 +86,11 @@ sub process_options {
                                      );
     pod2usage({-exitval => 0, -verbose => 2}) if($rh_opts->{'help'});
     die "get_fasta_and_tree_w_min_number.pl version $VERSION\n" if ($rh_opts->{'version'});
-    unless ($rh_opts->{'fa_dir'} && $rh_opts->{'tree_dir'} 
-        && $rh_opts->{'out_dir'} && $rh_opts->{'min_taxa'}) {
-        warn "--fa_dir is required\n" unless ($rh_opts->{'fa_dir'});
-        warn "--tree_dir is required\n" unless ($rh_opts->{'tree_dir'});
+    unless ( ($rh_opts->{'of_out'} || $rh_opts->{'of_resdir'}) 
+             && $rh_opts->{'out_dir'} && $rh_opts->{'min_taxa'}) {
+        unless ($rh_opts->{'of_out'} || $rh_opts->{'of_resdir'}) {
+            warn "Either --of_resdir or --of_out are required\n";
+        }
         warn "--out_dir is required\n" unless ($rh_opts->{'out_dir'});
         warn "--min_taxa is required\n" unless ($rh_opts->{'min_taxa'});
         usage();
@@ -103,7 +130,7 @@ sub write_seqs {
 }
 
 sub usage {
-    print "usage: get_fasta_and_tree_w_min_number.pl --fa_dir=FASTA_DIR --tree_dir=TREE_DIR --out_dir=OUT_DIR --min_taxa=MINIMUM_SEQS\n";    
+    print "usage: get_fasta_and_tree_w_min_number.pl --out_dir=OUT_DIR --min_taxa=MINIMUM_SEQS {--of_out|--of_resdir} [--help] [--version]\n";    
     exit;
 }
 
@@ -119,19 +146,19 @@ Joseph F. Ryan <joseph.ryan@whitney.ufl.edu>
 
 =head1 SYNOPSIS
 
-get_fasta_and_tree_w_min_number.pl --fa_dir=FASTA_DIR --tree_dir=TREE_DIR --out_dir=OUT_DIR --min_taxa=MINIMUM_SEQS [--help] [--version]
+get_fasta_and_tree_w_min_number.pl --out_dir=OUT_DIR --min_taxa=MINIMUM_SEQS {--of_out|--of_resdir} [--help] [--version]
 
 =head1 OPTIONS
 
 =over
 
-=item B<--fa_dir>
+=item B<--of_resdir>
 
-MultipleSequenceAlignments directory from an OrthoFinder run. Usually, OrthoFinder/Results_MonDD/MultipleSequenceAlignments where MonDD is 3 letter code for month followed by the date (e.g. Jul24).
+Results directory from an OrthoFinder run. Usually something like, OrthoFinder/Results_MonDD where MonDD is 3 letter code for month followed by the date (e.g. Jul24). --of_out can be used instead.
 
-=item B<--tree_dir>
+=item B<--of_out>
 
-Gene_Trees directory from an OrthoFinder run. Usually, OrthoFinder/Results_MonDD/Gene_Trees where MonDD is 3 letter code for month followed by the date (e.g. Jul24).
+If you save the standard output of an OrthoFinder run, you can supply this as an option to this script. The script will then parse the Results directory from this file. --of_resdir can be used instead.
 
 =item B<--out_dir>
 
