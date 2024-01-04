@@ -127,7 +127,7 @@ get_fasta_and_tree_w_min_number.pl --of_out=of.out --out_dir=GFWMN.out --min_tax
 phylopypruner --threads 1 --output=ppp.out --dir GFWMN.out --mask longest --min-support 0.5 --min-taxa 7 --prune MI > phylopypruner.out 2> phylopypruner.err
 ```
 
-# DO WE NEED TO RUN remove_blank_seqs_and_fewer_than_n.pl ???
+(TMPNOTE: DO WE NEED TO RUN remove_blank_seqs_and_fewer_than_n.pl ???)
 
 9. Get CDS files that with each of the pruned AA files
 
