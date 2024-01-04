@@ -32,6 +32,10 @@ run hyphy on many sequence alignments
 
 run pal2nal on many files
 
+### selectoprune.pl (requires https://github.com/josephryan/JFR-PerlModules)
+
+prune species tree to match subset of represented species in CDS alignment
+
 ### version
 
 used by Makefile.PL during install
