@@ -7,7 +7,7 @@ use Getopt::Long;
 use Pod::Usage;
 use Data::Dumper;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 our $AUTHOR  = 'Joseph F. Ryan <joseph.ryan@whitney.ufl.edu>';
 
 MAIN: {
@@ -59,6 +59,7 @@ sub get_tree_and_fa_dir {
                 chomp $line;
                 $line =~ s/^\s+//;
                 $ofrdir = $line;
+                $flag = 0;
             } elsif ($line =~ m/^Results:/) {
                 $flag = 1;
             }
