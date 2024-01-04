@@ -159,4 +159,83 @@ perl -pi -e 's/.fasta.transdecoder//g' unrooted.tree
 
 ##### PAML
 
+14. Annotate PAML tree ('unrooted.tree') by adding #1 after species name on foreground branches; branches A,B,C,D.
 
+```bash
+# Before
+cat unrooted.tree
+
+perl -pi -e 's/(Species_[ABCD])/$1#1/g' unrooted.tree
+
+# After
+cat unrooted.tree
+```
+
+15. Run CODEML (program within PAML that tests for selection; estimated time = 2+ hours?)
+
+```bash
+run_codeml.pl --tree=unrooted.tree --null --alt --aln_suf=phy > rc.out 2> rc.err &
+```
+
+##### HYPHY
+
+16. deactivate the selectings conda environment and activate the hyphy environment
+
+```bash
+conda deactivate selectings
+conda activate hyphy
+```
+
+17. Annotate HYPHY tree ('unrooted.tree') by adding {Foreground} after species name on foreground branches for tree file; branches A,B,C,D.
+
+```bash
+cp unrooted.tree unrooted.hphy.tre
+
+perl -pi -e 's/(Species_[ABCD])/$1\{Foreground\}/g' unrooted.hphy.tre
+```
+
+18. Run a single BUSTED
+
+```bash
+hyphy busted --alignment OGXXXXXXXXX_pruned.cds.fa_align.fa --tree unrooted.tree --branches Foreground --output OGXXXXXX.busted.json
+```
+
+19. Run a single aBSREL (adjust OGXXXXXXXXX to correspond with real file)
+
+```bash
+hyphy aBSREL --alignment OGXXXXXXXXX_pruned.cds.fa_align.fa --tree unrooted.tree --branches Foreground --output OGXXXXXXXXX.absrel.json
+```
+
+20. Run a single MEME (adjust OGXXXXXXXXX to correspond with real file)
+
+```bash
+hyphy meme --alignment OGXXXXXXXXX_pruned.cds.fa_align.fa --tree unrooted.tree --branches Foreground --output OGXXXXXXXXX.meme.json
+```
+
+21. Run a single RELAX (note: RELAX use --test instead of --branches to specify branches)  (adjust OGXXXXXXXXX to correspond with real file)
+
+```bash
+hyphy relax --alignment OGXXXXXXXXX_pruned.cds.fa_align.fa --tree unrooted.tree --test Foreground --output OGXXXXXXXXX.relax.json
+```
+
+22. Run Busted, Absrel, and Meme (meme=7 hrs; busted=13 hrs; absrel=9 hrs):
+```bash
+
+perl ../scripts/run_hyphy.pl --absrel --busted --meme --aln_dir=ALNDIR --out_dir=02-OUT --tree=unrooted.tree --pre=hyphy --require_num_seqs=7 &
+
+```
+
+# Parsing results
+
+PAML ALT versus NULL models
+
+Once complete you will have two CODEML MCL Results files for each of your CDS gene alignments (ALT versus NULL). Using the codeml_chisquare.pl you can generate p-values. The script calculates the cumulative probability of the chi-square distribution, given the degrees of freedom (DF = number of sequences) and the chi-square test statistic (`X`) which is: 2*(lnL1(ALT)-lnL0(NULL)). The p-value is then computed as 1 - chisqrprob(DF, X).
+
+NOTE: --df (degrees of freedom) = the number of parameters in the alternative model minus the number of parameters in the null model).
+
+NOTE: --max_pval limits the output to those results with p-value less than the value supplied
+
+```bash
+conda deactivate hyphy
+conda activate selectings
+codeml_chisquare.pl --codeml_dir=CODEMLDIR --alt_suf=alt.codeml --null_suf=null.codeml --df=1 --max_pval=0.05
