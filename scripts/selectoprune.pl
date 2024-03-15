@@ -10,7 +10,7 @@ use JFR::Fasta;
 use Data::Dumper;
 
 our $PROGRAM = 'selectoprune.pl';
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 our $PHYUTILITY = 'phyutility';  # adjust to path to phyutility if not in path
 our $VERBOSE    = 0;  # set to 1 to print phyutility command line
@@ -29,9 +29,9 @@ sub prune {
     my $outfile = "${pre}.pruned.tre";
     my $names = '';
     foreach my $name (@{$ra_p}) {
-        $names .= "-names $name ";
+        $names .= "$name ";
     }
-    my $cmd = "phyutility -pr $names -in $tree -out $outfile";
+    my $cmd = "$PHYUTILITY -pr -names $names -in $tree -out $outfile";
     print "$cmd\n" if ($VERBOSE);
     system $cmd;
 }
