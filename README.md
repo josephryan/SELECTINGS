@@ -115,10 +115,10 @@ mv *.cds cds
 orthofinder -X -z -t 1 -f peps -M msa > of.out 2> of.err 
 ```
 
-7. Get data associated with orthogroups containing all seven species. 
+7. Get data associated with orthogroups containing all seven species (adjust Results_MonDD in command). 
 
 ```bash
-get_fasta_and_tree_w_min_number.pl --of_out=of.out --out_dir=GFWMN.out --min_taxa=7
+get_fasta_and_tree_w_min_number.pl --out_dir=GFWMN.out --min_taxa=7 --fa_dir=peps/OrthoFinder/Results_MonDD/MultipleSequenceAlignments --tree_dir=peps/OrthoFinder/Results_MonDD/Gene_Trees
 ```
 
 8. Run PhyloPyPruner (identify 1-to-1 orthologs) [THREADS: adjust --threads]
