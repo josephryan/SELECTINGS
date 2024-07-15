@@ -4,7 +4,7 @@ A pipeline to detect positive Darwinian selection in large datasets
 The detection of positive Darwinian selection enables the identification of important changes in protein-coding regions of a genome that helped shape the evolutionary history of a particular lineage. Despite the availability of coding sequence data for many thousands of species, it remains a challenge to conduct large-scale selection analyses on broad collections of sequence data. To address this gap, we have developed a pipeline that allows for the analysis of an unlimited number of genes from an unlimited number of assembled transcriptomes and/or gene models gathered from genomic datasets. The SELECTINGS (Screening Evolutionary Lineages for Exceptional Coding Transcripts In Next Generation Sequence) Pipeline incorporates several existing bioinformatic packages for translating transcriptomes (Transdecoder), identifying orthologous sequences (OrthoFinder), aligning sequences (MAFFT), building gene trees (FastTree or IQTree), pruning trees (PhyloPyPruner), converting protein alignments to nucleotide alignments (PAL2NAL), detecting gene and site-based evidence of positive selection (comparable branch-site tests in PAML and HyPhy). This repo includes a set of scripts, documentation, sample data, installation instructions , and a vignette. Compared to other similar tools, the SELECTINGS Pipeline allows for greater flexibility in terms of methodology, number of genes that can be analyzed, and the phylogenetic breadth that can be sampled.
 
 ## Getting started with SELECTINGS
-You need to install the following prerequesites. We will create 2 conda images. This is necessary as hyphy does not work when some of these other packages are installed.
+You need to install the following prerequesites. We will create 2 conda images (~2.3Gb disk space required). This is necessary as hyphy does not work when some of these other packages are installed.
 
 1. Create hyphy environment
 
@@ -26,7 +26,7 @@ conda install -y -c conda-forge perl perl-uri r-ape scipy
 conda install -y -c bioconda orthofinder transdecoder pal2nal paml perl-db-file perl-math-cdf perl-json-parse perl-set-intervaltree perl-uri
 pip install phylopypruner   
 
-3. Clone SELECTINGS and install scripts/modules
+3. Clone SELECTINGS (~1.5Gb disk space required) and install scripts/modules
 
 ```bash
 git clone https://github.com/josephryan/SELECTINGS
