@@ -174,7 +174,9 @@ cat unrooted.tree
 15. Run CODEML (program within PAML that tests for selection; estimated time = 2+ hours?)
 
 ```bash
-run_codeml.pl --tree=unrooted.tree --null --alt --aln_suf=phy > rc.out 2> rc.err &
+cd p2n.out
+run_codeml.pl --tree=../unrooted.tree --null --alt --aln_suf=phy > rc.out 2> rc.err
+cd ..
 ```
 
 ##### HYPHY
