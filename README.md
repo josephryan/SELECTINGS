@@ -184,7 +184,7 @@ cd ..
 16. deactivate the selectings conda environment and activate the hyphy environment
 
 ```bash
-conda deactivate selectings
+conda deactivate
 conda activate hyphy
 ```
 
