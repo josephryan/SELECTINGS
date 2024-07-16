@@ -8,7 +8,7 @@ use Getopt::Long;
 use Pod::Usage;
 use Data::Dumper;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 our $AUTHOR  = 'Joseph F. Ryan <joseph.ryan@whitney.ufl.edu>';
 
 MAIN: {
@@ -19,7 +19,12 @@ MAIN: {
     opendir DIR, "." or die "cannot opendir .:$!";
     my @files = grep { /\.$aln_suf$/ } readdir DIR;
 
+    die "$tree does not exist" unless -e $tree;
+    die "there are no files in current directory" unless (scalar(@files) > 0);
+
     foreach my $file (@files) {
+        warn "skipping empty file: $file" if (-z $file);
+        next if (-z $file);
         if ($rh_o->{'alt'}) {
             write_ctl_file(0,'alt',$file,$tree);
             print "running: codeml ${file}.alt.ctl > ${file}.alt.out 2> ${file}.alt.err...";
