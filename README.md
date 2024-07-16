@@ -191,9 +191,13 @@ conda activate hyphy
 17. Annotate HYPHY tree ('unrooted.tree') by adding {Foreground} after species name on foreground branches for tree file; branches A,B,C,D.
 
 ```bash
-cp unrooted.tree unrooted.hphy.tre
+mkdir hyphy
+cd hyphy
+cp unrooted.tre .
+perl -pi -e 's/(Species_[ABCD])#1/$1\{Foreground\}/g' unrooted.tree
 
-perl -pi -e 's/(Species_[ABCD])/$1\{Foreground\}/g' unrooted.hphy.tre
+# create symbolic links to FASTA alignments (only those with non-zero file sizes)
+perl -e 'opendir(D, "../p2n.out"); foreach $ff (readdir(D)) { $gg = "../p2n.out/$ff"; symlink $gg, $ff if (-f $gg && -s $gg && $gg =~ /fa$/); }'
 ```
 
 18. Run a single BUSTED
