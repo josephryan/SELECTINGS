@@ -195,7 +195,7 @@ conda activate hyphy
 ```bash
 mkdir hyphy
 cd hyphy
-cp unrooted.tre .
+cp ../unrooted.tre .
 perl -pi -e 's/(Species_[ABCD])#1/$1\{Foreground\}/g' unrooted.tree
 
 # create symbolic links to FASTA alignments (only those with non-zero file sizes)
