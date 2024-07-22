@@ -7,7 +7,6 @@ use warnings;
 use Getopt::Long;
 use Pod::Usage;
 use File::Copy;
-#use JFR::Fasta;
 use Data::Dumper;
 
 our $VERSION = '0.02';
@@ -18,9 +17,6 @@ MAIN: {
     my $cds_dir  = $rh_o->{'cds_dir'};
     my $aa_dir   = $rh_o->{'aa_dir'};
     my $outdir   = $rh_o->{'out_dir'};
-#    my $cds_dir = $ARGV[0] or die "usage: $0 CDS_DIR PRUNED_AA_DIR OUTDIR\n";
-#    my $aa_dir  = $ARGV[1] or die "usage: $0 CDS_DIR PRUNED_AA_DIR OUTDIR\n";
-#    my $outdir = $ARGV[2] or die "usage: $0 CDS_DIR PRUNED_AA_DIR OUTDIR\n";
 
     check_outdir($outdir);
 
@@ -125,7 +121,6 @@ use IO::Uncompress::Bunzip2 qw($Bunzip2Error);
 use IO::Uncompress::Unzip qw($UnzipError);
 
 # based off code by Ken Trout named NHGRI::FastaParser
-$JFR::Fasta::AUTHOR  = 'Joseph Ryan';
 $JFR::Fasta::VERSION = '1.4'; # match Git release version
 
 sub get_def_w_o_gt {
