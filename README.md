@@ -128,9 +128,7 @@ get_fasta_and_tree_w_min_number.pl --out_dir=GFWMN.out --min_taxa=7 --fa_dir=pep
 phylopypruner --threads 1 --output=ppp.out --dir GFWMN.out --mask longest --min-support 0.5 --min-taxa 7 --prune MI > phylopypruner.out 2> phylopypruner.err
 ```
 
-(TMPNOTE: DO WE NEED TO RUN remove_blank_seqs_and_fewer_than_n.pl ???)
-
-9. Get CDS files that with each of the pruned AA files
+9. Get CDS files that correspnd with each of the pruned AA files
 
 ```bash
 get_corresponding_cds.pl --cds_dir=cds --aa_dir=ppp.out/phylopypruner_output/output_alignments --outdir=cds.subset
