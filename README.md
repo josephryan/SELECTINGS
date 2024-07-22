@@ -25,6 +25,7 @@ conda activate selectings
 conda install -y -c conda-forge perl perl-uri r-ape scipy
 conda install -y -c bioconda orthofinder transdecoder pal2nal paml perl-db-file perl-math-cdf perl-json-parse perl-set-intervaltree perl-uri
 pip install phylopypruner   
+```
 
 3. Clone SELECTINGS (~1.5Gb disk space required) and install scripts/modules
 
