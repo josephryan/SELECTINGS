@@ -204,25 +204,25 @@ perl -e 'opendir(D, "../p2n.out"); foreach $ff (readdir(D)) { $gg = "../p2n.out/
 18. Run a single BUSTED
 
 ```bash
-hyphy busted --alignment OGXXXXXXXXX_pruned.cds.fa_align.fa --tree unrooted.tree --branches Foreground --output OGXXXXXX.busted.json
+hyphy busted --alignment OGXXXXXXXXX_pruned.cds.fa_align.fa --tree unrooted.tree --branches Foreground --output OGXXXXXX.busted.json > OGXXXXXX.busted.out 2> OGXXXXXX.busted.err
 ```
 
 19. Run a single aBSREL (adjust OGXXXXXXXXX to correspond with real file)
 
 ```bash
-hyphy aBSREL --alignment OGXXXXXXXXX_pruned.cds.fa_align.fa --tree unrooted.tree --branches Foreground --output OGXXXXXXXXX.absrel.json
+hyphy aBSREL --alignment OGXXXXXXXXX_pruned.cds.fa_align.fa --tree unrooted.tree --branches Foreground --output OGXXXXXXXXX.absrel.json > OGXXXXXX.absrel.out 2> OGXXXXXX.absrel.err
 ```
 
 20. Run a single MEME (adjust OGXXXXXXXXX to correspond with real file)
 
 ```bash
-hyphy meme --alignment OGXXXXXXXXX_pruned.cds.fa_align.fa --tree unrooted.tree --branches Foreground --output OGXXXXXXXXX.meme.json
+hyphy meme --alignment OGXXXXXXXXX_pruned.cds.fa_align.fa --tree unrooted.tree --branches Foreground --output OGXXXXXXXXX.meme.json > OGXXXXXX.meme.out 2> OGXXXXXX.meme.err
 ```
 
 21. Run a single RELAX (note: RELAX use --test instead of --branches to specify branches)  (adjust OGXXXXXXXXX to correspond with real file)
 
 ```bash
-hyphy relax --alignment OGXXXXXXXXX_pruned.cds.fa_align.fa --tree unrooted.tree --test Foreground --output OGXXXXXXXXX.relax.json
+hyphy relax --alignment OGXXXXXXXXX_pruned.cds.fa_align.fa --tree unrooted.tree --test Foreground --output OGXXXXXXXXX.relax.json > OGXXXXXX.relax.out 2> OGXXXXXX.relax.err
 ```
 
 22. Run Busted, Absrel, and Meme (meme=7 hrs; busted=13 hrs; absrel=9 hrs):
